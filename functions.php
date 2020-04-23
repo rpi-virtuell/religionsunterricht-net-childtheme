@@ -1,4 +1,10 @@
 <?php
+
+global $content_width;
+$content_width = 1200;
+
+
+
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
@@ -46,3 +52,25 @@ function s2fwp_suche( $qvars ) {
 	}
 }
 add_action( 'wp', 's2fwp_suche' );
+
+//rich_text_editor in Werkzeug formular
+add_filter( 'gform_rich_text_editor_options', 'ru_tools_use_rich_text_editor', 10, 4 );
+function ru_tools_use_rich_text_editor( $editor_settings, $field_object, $form, $entry ) {
+    $editor_settings['editor_height'] = 400;
+	$editor_settings['media_buttons'] = true;
+    return $editor_settings;
+}
+
+//Voreinstellungen für das einbetten von videos
+function ru_embed_defaults($embed_size){
+	$embed_size['width'] = 1200;
+	$embed_size['height'] = 600;
+	return $embed_size;
+}
+//add_filter('embed_defaults', 'ru_embed_defaults');
+
+function include_dashicons_font(){
+    //Lade Dashicons font
+    wp_enqueue_style('dashicons');
+}
+add_action( 'wp_enqueue_scripts', 'include_dashicons_font', 100 );
